@@ -1,0 +1,2 @@
+resources/captures/*
+!resources/captures/.keep
