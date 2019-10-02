@@ -1,2 +1,4 @@
+resources/bags/*
+!resources/bags/.keep
 resources/captures/*
 !resources/captures/.keep

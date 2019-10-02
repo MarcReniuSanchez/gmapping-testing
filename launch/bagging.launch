@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<launch>
+
+  <param name="use_sim_time" value="true" />
+
+  <!-- RVIZ -->
+  <!-- <node name="rviz" type="rviz" pkg="rviz" args="-d $(find gmapping_test)/rviz_cfg/bagging_view.rviz"/> -->
+
+  <!-- TELEOP -->
+  <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py"
+        args="_speed:=5.0 _turn:=0.2" name="teleop" output="screen"/>
+
+  <!-- ROSBAG -->
+  <!-- <node pkg="rosbag" type="record" name="rosbag_record_husky" args="record -a -O $(find gmapping_test)/resources/bags/husky.bag"/> -->
+  <node pkg="rosbag" type="record" name="rosbag_record_husky_filtered"
+    args="record -O $(find gmapping_test)/resources/bags/husky_filtered.bag
+            /diagnostics
+            /husky_velocity_controller/cmd_vel
+            /husky_velocity_controller/odom
+            /imu/data
+            /joint_states
+            /odometry/filtered
+            /rosout
+            /rosout_agg
+            /scan
+            /tf
+            /tf_static
+          " />
+
+  <!-- GAZEBO -->
+  <arg name="laser_enabled" default="true"/>
+  <arg name="kinect_enabled" default="false"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find gmapping_test)/resources/worlds/eurecat.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <include file="$(find husky_gazebo)/launch/spawn_husky.launch">
+    <arg name="laser_enabled" value="$(arg laser_enabled)"/>
+    <arg name="kinect_enabled" value="$(arg kinect_enabled)"/>
+  </include>
+
+</launch>
