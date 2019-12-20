@@ -28,6 +28,9 @@
           " />
 
   <!-- GAZEBO -->
+  <include file="$(find gmapping_test)/launch/eurecat.launch" />
+
+  <!--
   <arg name="laser_enabled" default="true"/>
   <arg name="kinect_enabled" default="false"/>
 
@@ -44,5 +47,6 @@
     <arg name="laser_enabled" value="$(arg laser_enabled)"/>
     <arg name="kinect_enabled" value="$(arg kinect_enabled)"/>
   </include>
+  -->
 
 </launch>

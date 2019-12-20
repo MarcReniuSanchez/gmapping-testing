@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="eutslam" default="false" />
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find gmapping_test)/rviz_cfg/exploration.rviz" output="screen"/>
+  <!--- Run gmapping -->
+  <group unless="$(arg eutslam)">
+
+    <include file="$(find gmapping_test)/launch/gmapping.launch">
+      <arg name="no_rviz" value="true" />
+    </include>
+  </group>
+  <!--- Run EUTSLAM -->
+  <group if="$(arg eutslam)">
+    <include file="$(find common)/launch/robot-graphSLAM.launch">
+      <arg name="no_rviz" value="true" />
+    </include>
+    <!-- <node pkg="amcl" type="amcl" name="amcl">
+    </node> -->
+  </group>
+  <!--- Run AMCL -->
+
+  <!--- Run Move Base -->
+  <include file="$(find gmapping_test)/launch/move_base.launch" />
+
+  <!-- Run Frontier Exploration -->
+  <include file="$(find gmapping_test)/launch/exploration.launch" />
+
+</launch>
